@@ -7,6 +7,11 @@ import {fetchPopularShowsResolver} from "./resolvers/fetch-popular-shows.resolve
 const routes: Routes = [
   {
     path: "",
+    redirectTo: "search",
+    pathMatch: 'full'
+  },
+  {
+    path: "search",
     component: SearchViewComponent,
     resolve: { tvShows: fetchPopularShowsResolver},
   },
