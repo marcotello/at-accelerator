@@ -5,8 +5,9 @@
         <fieldset>
           <legend>TV Show Search</legend>
           <label for="name">Name</label>
-          <input type="text" id="name" placeholder="Name of the show"/>
-          <button class="primary">Search</button>
+          <input type="text" id="name" placeholder="Name of the show"
+                 [(ngModel)]="tvShowName" [ngModelOptions]="{standalone: true}"/>
+          <button class="primary" (click)="searchTvShow()">Search</button>
         </fieldset>
       </form>
     </div>

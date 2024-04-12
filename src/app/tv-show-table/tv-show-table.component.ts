@@ -13,4 +13,12 @@ import {TvShow} from "../models/tv-show.model";
 export class TvShowTableComponent {
 
   tvShowsSignal = input<TvShow[]>([]);
+
+  public getYear(date: string): string {
+    if( date === null) {
+      return '';
+    }
+
+    return date.substring(0, 4)
+  }
 }
