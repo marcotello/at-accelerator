@@ -10,24 +10,18 @@ import {HttpClient, HttpParams} from "@angular/common/http";
 export class TvShowsHttpService {
 
   private BASE_URL = 'https://www.episodate.com/api';
-  private MOST_POPULAR_TV_SHOWS_URL = this.BASE_URL + '/most-popular?page=1';
   private SEARCH_TV_SHOWS_URL = this.BASE_URL + '/search';
 
   constructor(private http: HttpClient) { }
 
-  public fetchMostPopularTVShows(): Observable<TvShow[]> {
-    return this.http
-      .get<TvShowsApiResponse>(this.MOST_POPULAR_TV_SHOWS_URL)
-      .pipe(
-        map(response => response.tv_shows)
-      );
-  }
-
   public searchTVShows(name: string): Observable<TvShow[]> {
 
     let queryParams = new HttpParams();
-    queryParams = queryParams.append("q", name);
     queryParams = queryParams.append("page",1);
+
+    if(name !== '') {
+      queryParams = queryParams.append("q", name);
+    }
 
     return this.http
       .get<TvShowsApiResponse>(this.SEARCH_TV_SHOWS_URL, {params:queryParams})

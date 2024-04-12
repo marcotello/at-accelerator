@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, input} from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {TvShow} from "../models/tv-show.model";
 
 @Component({
@@ -19,6 +19,33 @@ export class TvShowTableComponent {
       return '';
     }
 
-    return date.substring(0, 4)
+    const separator = this.findDateSeparator(date)
+
+    const splittedDate = date.split(separator);
+
+    return this.findYear(splittedDate);
+  }
+
+  private findYear(splittedDate: string[]): string {
+    let year = '';
+
+    for (let item of splittedDate) {
+      if(item.length === 4) {
+        year = item;
+        break;
+      }
+    }
+
+    return year;
+  }
+
+  private findDateSeparator(date: string): string {
+    let separator = '/';
+
+    if(date.includes('-')) {
+      separator = '-';
+    }
+
+    return separator;
   }
 }

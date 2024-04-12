@@ -7,7 +7,7 @@ import {inject} from "@angular/core";
 export const fetchPopularShowsResolver: ResolveFn<Observable<TvShow[]>> = (
   route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
-): Observable<TvShow[]> => inject(TvShowsHttpService).fetchMostPopularTVShows()
+): Observable<TvShow[]> => inject(TvShowsHttpService).searchTVShows('')
   .pipe(
     catchError((error) => {
       console.error('Error fetching popular TV shows', error);
