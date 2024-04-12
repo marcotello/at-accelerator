@@ -13,6 +13,8 @@ import {TvShow} from "../models/tv-show.model";
 export class TvShowTableComponent {
 
   tvShowsSignal = input<TvShow[]>([]);
+  showSpinnerSignal = input<boolean>(false);
+
 
   public getYear(date: string): string {
     if( date === null) {

@@ -21,6 +21,7 @@ export class SearchViewComponent implements OnInit, OnDestroy {
   private searchTvShowsSubscription: Subscription | undefined;
 
   tvShowName: string= '';
+  showSpinner = false;
 
   tvShowsSignal = signal<TvShow[]>([]);
 
@@ -28,8 +29,10 @@ export class SearchViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.showSpinner = true;
     this.fetchInitialTvShowsSubscription = this.activatedRoute.data.subscribe(({tvShows}) => {
       this.tvShowsSignal.set(tvShows);
+      this.showSpinner = false;
     });
   }
 
@@ -39,8 +42,10 @@ export class SearchViewComponent implements OnInit, OnDestroy {
   }
 
   searchTvShow(): void {
+    this.showSpinner = true;
     this.searchTvShowsSubscription = this.tvShowsHttpService.searchTVShows(this.tvShowName).subscribe(tvShows => {
       this.tvShowsSignal.set(tvShows);
+      this.showSpinner = false;
     });
   }
 }
