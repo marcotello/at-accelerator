@@ -1,11 +1,11 @@
-import {ChangeDetectionStrategy, Component, OnDestroy, OnInit, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, Signal} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TvShowTableComponent } from '../tv-show-table/tv-show-table.component';
-import { ActivatedRoute } from "@angular/router";
-import {of, Subscription} from "rxjs";
-import { TvShow } from "../models/tv-show.model";
 import {FormsModule} from "@angular/forms";
 import {TvShowsHttpService} from "../services/tv-shows-http.service";
+import {ActivatedRoute} from "@angular/router";
+import {TvShow} from "../models/tv-show.model";
+import {TvShowTableSpinnerService} from "../services/tv-show-table-spinner.service";
 
 @Component({
   selector: 'app-search-view',
@@ -15,38 +15,18 @@ import {TvShowsHttpService} from "../services/tv-shows-http.service";
   templateUrl: './search-view.component.html',
   styleUrls: ['./search-view.component.css']
 })
-export class SearchViewComponent implements OnInit, OnDestroy {
+export class SearchViewComponent {
 
-  private fetchInitialTvShowsSubscription: Subscription | undefined;
-  private searchTvShowsSubscription: Subscription | undefined;
+  protected tvShowsHttpService = inject(TvShowsHttpService);
+  protected tvShowTableSpinnerService = inject(TvShowTableSpinnerService);
 
-  tvShowName: string= '';
-  showSpinner = false;
 
-  tvShowsSignal = signal<TvShow[]>([]);
+  tvShowsSignal: Signal<TvShow[]> = inject(ActivatedRoute).snapshot.data['tvShows'];
 
-  constructor(private activatedRoute: ActivatedRoute, private tvShowsHttpService: TvShowsHttpService) {
-  }
+  searchTvShow(term = "", event?: Event): void {
+    event?.preventDefault();
 
-  ngOnInit(): void {
-    this.showSpinner = true;
-    this.fetchInitialTvShowsSubscription = this.activatedRoute.data.subscribe(({tvShows}) => {
-      this.tvShowsSignal.set(tvShows);
-      this.showSpinner = false;
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.fetchInitialTvShowsSubscription?.unsubscribe();
-    this.searchTvShowsSubscription?.unsubscribe();
-  }
-
-  searchTvShow(): void {
-    this.showSpinner = true;
-    this.searchTvShowsSubscription = this.tvShowsHttpService.searchTVShows(this.tvShowName).subscribe(tvShows => {
-      this.tvShowsSignal.set(tvShows);
-      this.showSpinner = false;
-    });
+    this.tvShowsSignal = this.tvShowsHttpService.searchTVShows(term);
   }
 }
 
