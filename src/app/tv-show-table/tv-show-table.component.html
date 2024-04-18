@@ -1,4 +1,8 @@
+<div>
+  The value of the Signal is: {{showSpinnerSignal()}}
+</div>
 <table>
+  <caption>This table shows the result of the TV Shows search</caption>
   <thead>
   <tr>
     <th>Name</th>
@@ -9,38 +13,30 @@
   </tr>
   </thead>
   <tbody>
-  <tr>
-    <td data-label="Name">Alone</td>
-    <td data-label="Country">US</td>
-    <td data-label="Year started">2015</td>
-    <td data-label="Status">Running</td>
-    <td data-label="Actions">
-      <span class="icon-info"></span>
-      <span class="icon-bookmark"></span>
-      <span class="icon-link"></span>
-    </td>
-  </tr>
-  <tr>
-    <td data-label="Name">Black Mirror</td>
-    <td data-label="Country">UK</td>
-    <td data-label="Year started">2011</td>
-    <td data-label="Status">To Be Determined</td>
-    <td data-label="Actions">
-      <span class="icon-info"></span>
-      <span class="icon-bookmark highlight"></span>
-      <span class="icon-link"></span>
-    </td>
-  </tr>
-  <tr>
-    <td data-label="Name">True Detective</td>
-    <td data-label="Country">US</td>
-    <td data-label="Year started">2014</td>
-    <td data-label="Status">Running</td>
-    <td data-label="Actions">
-      <span class="icon-info"></span>
-      <span class="icon-bookmark"></span>
-      <span class="icon-link"></span>
-    </td>
-  </tr>
+    @if (showSpinnerSignal()) {
+      <tr>
+        <td data-label="Name">
+          <div class="spinner-container">
+            <div class="spinner primary"></div>
+          </div>
+        </td>
+      </tr>
+    }
+    @else {
+      @for (tvShow of tvShowsSignal(); track tvShow.id) {
+        <tr>
+          <td data-label="Name">{{ tvShow.name }}</td>
+          <td data-label="Country">{{ tvShow.country }}</td>
+          <td data-label="Year started">{{tvShow.start_date | date: 'yyyy'}}</td>
+          <td data-label="Status">{{ tvShow.status }}</td>
+          <td data-label="Actions">
+            <span class="icon-info"></span>
+            <span class="icon-bookmark"></span>
+            <span class="icon-link"></span>
+          </td>
+        </tr>
+      }
+    }
   </tbody>
 </table>
+
