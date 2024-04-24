@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, inject, Signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, signal, Signal} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TvShowTableComponent } from '../tv-show-table/tv-show-table.component';
 import {FormsModule} from "@angular/forms";
@@ -17,16 +17,24 @@ import {TvShowTableSpinnerService} from "../services/tv-show-table-spinner.servi
 })
 export class SearchViewComponent {
 
+  private tvShowsSignal = signal<TvShow[]>([]);
+
   protected tvShowsHttpService = inject(TvShowsHttpService);
   protected tvShowTableSpinnerService = inject(TvShowTableSpinnerService);
 
-
-  tvShowsSignal: Signal<TvShow[]> = inject(ActivatedRoute).snapshot.data['tvShows'];
+  tvShowsSignalToDisplay: Signal<TvShow[]> = inject(ActivatedRoute).snapshot.data['tvShows'];
 
   searchTvShow(term = "", event?: Event): void {
     event?.preventDefault();
 
-    this.tvShowsSignal = this.tvShowsHttpService.searchTVShows(term);
+    this.tvShowsSignalToDisplay = this.tvShowsHttpService.searchTVShows(term);
+  }
+
+  addTvShowToFavorites($event: any) {
+    let tvShows = this.tvShowsSignalToDisplay();
+
+    // TODO: Implement onInit to highlight the favorite tv shows
+    // TODO: Complete this TVShows
   }
 }
 

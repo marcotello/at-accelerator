@@ -9,12 +9,8 @@ export class StorageService {
     localStorage.setItem(key, JSON.stringify(value));
   }
 
-  getItem<Type>(key: string): Type | null {
+  getItem<Type>(key: string): Type {
     let value = localStorage.getItem(key);
-    if (value) {
-      return JSON.parse(value);
-    }
-
-    return null;
+    return JSON.parse(value!);
   }
 }
