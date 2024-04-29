@@ -16,13 +16,14 @@ export class TvShowTableComponent {
   private favoritesService = inject(FavoritesService);
 
   tvShowsSignal = input.required<TvShow[]>();
-  showSpinnerSignal = this.favoritesService.getFavoriteTvShows();
+  showSpinnerSignal = input<boolean>();
 
   // New syntax not supported by WebStorm yet
   // tvShowHighlighted = output<number>();
   @Output() tvShowHighlighted = new EventEmitter<number>();
 
   toggleFavorite(tvShowId: number): void {
+    console.log(tvShowId);
     this.tvShowHighlighted.emit(tvShowId);
   }
 }

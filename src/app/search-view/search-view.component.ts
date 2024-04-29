@@ -32,9 +32,8 @@ export class SearchViewComponent {
 
   addTvShowToFavorites($event: any) {
     let tvShows = this.tvShowsSignalToDisplay();
-
-    // TODO: Implement onInit to highlight the favorite tv shows
-    // TODO: Complete this TVShows
+    // TODO: Add the id fo the TV Show to the favorites array and save it to the local storage.
+    // TODO: Update the tvShowsSignalToDisplay with the new favorites array.
   }
 }
 
