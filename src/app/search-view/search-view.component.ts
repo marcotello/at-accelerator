@@ -1,11 +1,12 @@
-import {ChangeDetectionStrategy, Component, inject, signal, Signal} from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { TvShowTableComponent } from '../tv-show-table/tv-show-table.component';
+import {ChangeDetectionStrategy, Component, inject, Signal} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {TvShowTableComponent} from '../tv-show-table/tv-show-table.component';
 import {FormsModule} from "@angular/forms";
 import {TvShowsHttpService} from "../services/tv-shows-http.service";
 import {ActivatedRoute} from "@angular/router";
 import {TvShow} from "../models/tv-show.model";
 import {TvShowTableSpinnerService} from "../services/tv-show-table-spinner.service";
+import {FavoritesService} from "../services/favorites.service";
 
 @Component({
   selector: 'app-search-view',
@@ -17,10 +18,9 @@ import {TvShowTableSpinnerService} from "../services/tv-show-table-spinner.servi
 })
 export class SearchViewComponent {
 
-  private tvShowsSignal = signal<TvShow[]>([]);
-
   protected tvShowsHttpService = inject(TvShowsHttpService);
   protected tvShowTableSpinnerService = inject(TvShowTableSpinnerService);
+  private favoritesService = inject(FavoritesService);
 
   tvShowsSignalToDisplay: Signal<TvShow[]> = inject(ActivatedRoute).snapshot.data['tvShows'];
 
@@ -30,10 +30,8 @@ export class SearchViewComponent {
     this.tvShowsSignalToDisplay = this.tvShowsHttpService.searchTVShows(term);
   }
 
-  addTvShowToFavorites($event: any) {
-    let tvShows = this.tvShowsSignalToDisplay();
-    // TODO: Add the id fo the TV Show to the favorites array and save it to the local storage.
-    // TODO: Update the tvShowsSignalToDisplay with the new favorites array.
+  toggleFavoriteTvShow($event: any) {
+    this.tvShowsSignalToDisplay = this.favoritesService.toggleFavorite($event, this.tvShowsSignalToDisplay());
   }
 }
 

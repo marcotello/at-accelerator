@@ -8,27 +8,29 @@ import { FAVORITES_KEY } from '../constants/application-contants';
 })
 export class FavoritesService {
 
-  private favoriteTvShowIDsSignal = signal<number[]>([]);
+  private favoriteTvShowIDsSignal = signal<TvShow[]>([]);
 
   private storageService = inject(StorageService);
 
-  public toggleFavorite(tvShowId: TvShow["id"]): Signal<number[]> {
-    let tvShowIds = this.getTvShowsFromLocalStorage();
-
-    if (tvShowIds.includes(tvShowId)) {
-      tvShowIds.splice(tvShowIds.indexOf(tvShowId), 1);
-    } else {
-      tvShowIds.push(tvShowId);
+  public toggleFavorite(tvShowId: TvShow["id"], tvShows: TvShow[]): Signal<TvShow[]> {
+    for (const tvShow of tvShows) {
+      if (tvShow.id === tvShowId) {
+        tvShow.isFavorite = !tvShow.isFavorite;
+      }
     }
 
-    this.saveFavoriteToLocalStorage(tvShowIds);
+    this.favoriteTvShowIDsSignal.set(tvShows);
 
-    this.favoriteTvShowIDsSignal.set(tvShowIds);
+    this.removeTvShowsFromLocalStorage();
+
+    const favoriteTvShows = tvShows.filter(tvShow => tvShow.isFavorite);
+
+    this.saveTvShowsToLocalStorage(favoriteTvShows);
 
     return this.favoriteTvShowIDsSignal.asReadonly();
   }
 
-  public getFavoriteTvShows(): Signal<number[]> {
+  public getFavoriteTvShows(): Signal<TvShow[]> {
 
     const tvShowIds = this.getTvShowsFromLocalStorage();
 
@@ -37,11 +39,29 @@ export class FavoritesService {
     return this.favoriteTvShowIDsSignal.asReadonly();
   }
 
-  private saveFavoriteToLocalStorage(tvShowIds: number[]) : void {
-    this.storageService.storeItem<number[]>(FAVORITES_KEY, tvShowIds);
+  public mergeFavoriteTvShows(tvShows: TvShow[]): Signal<TvShow[]> {
+    const favoriteTvShows = this.getTvShowsFromLocalStorage();
+
+    for (const tvShow of tvShows) {
+      if (favoriteTvShows.find(favoriteTvShow => favoriteTvShow.id === tvShow.id)) {
+        tvShow.isFavorite = true;
+      }
+    }
+
+    this.favoriteTvShowIDsSignal.set(tvShows);
+
+    return this.favoriteTvShowIDsSignal.asReadonly();
   }
 
-  private getTvShowsFromLocalStorage(): number[] {
-    return this.storageService.getItem<number[]>(FAVORITES_KEY) || [];
+  private saveTvShowsToLocalStorage(tvShowIds: TvShow[]) : void {
+    this.storageService.storeItem<TvShow[]>(FAVORITES_KEY, tvShowIds);
+  }
+
+  private getTvShowsFromLocalStorage(): TvShow[] {
+    return this.storageService.getItem<TvShow[]>(FAVORITES_KEY) || [];
+  }
+
+  private removeTvShowsFromLocalStorage(): void {
+    this.storageService.removeItem<TvShow[]>(FAVORITES_KEY)
   }
 }

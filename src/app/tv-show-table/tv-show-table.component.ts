@@ -23,7 +23,6 @@ export class TvShowTableComponent {
   @Output() tvShowHighlighted = new EventEmitter<number>();
 
   toggleFavorite(tvShowId: number): void {
-    console.log(tvShowId);
     this.tvShowHighlighted.emit(tvShowId);
   }
 }

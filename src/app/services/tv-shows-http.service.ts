@@ -4,7 +4,6 @@ import {TvShowsApiResponse} from "../models/tv-shows-api-response.model";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {TvShowTableSpinnerService} from "./tv-show-table-spinner.service";
 import {FavoritesService} from "./favorites.service";
-import {map} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -34,18 +33,9 @@ export class TvShowsHttpService {
     }
 
     this.http.get<TvShowsApiResponse>(this.SEARCH_TV_SHOWS_URL, {params:queryParams})
-      .pipe(
-        map(data => {
-          const favoriteTvShowsIds = this.favoritesService.getFavoriteTvShows();
-
-          data.tv_shows.forEach(tvShow => {
-            tvShow.isFavorite = favoriteTvShowsIds().includes(tvShow.id);
-          });
-
-          return data.tv_shows;
-        })
-      ).subscribe(tvShows => {
-        this.searchTvShowsSignal.set(tvShows);
+      .subscribe(data => {
+        const mergedTvShows = this.favoritesService.mergeFavoriteTvShows(data.tv_shows);
+        this.searchTvShowsSignal.set(mergedTvShows());
       });
 
     this.tvShowTableSpinnerService.hideSpinner();

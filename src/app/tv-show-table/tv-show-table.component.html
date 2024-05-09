@@ -31,8 +31,7 @@
           <td data-label="Status">{{ tvShow.status }}</td>
           <td data-label="Actions">
             <span class="icon-info"></span>
-            <span class="icon-bookmark" (click)="toggleFavorite(tvShow.id)"
-                  [class.highlight]="tvShow.isFavorite">
+            <span class="icon-bookmark" (mouseup)="toggleFavorite(tvShow.id)" [class.highlight]="tvShow.isFavorite">
             </span>
             <span class="icon-link"></span>
           </td>

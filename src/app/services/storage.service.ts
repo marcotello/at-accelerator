@@ -13,4 +13,8 @@ export class StorageService {
     let value = localStorage.getItem(key);
     return JSON.parse(value!);
   }
+
+  removeItem<Type>(key: string): void {
+    localStorage.removeItem(key);
+  }
 }

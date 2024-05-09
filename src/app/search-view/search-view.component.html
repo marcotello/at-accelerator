@@ -14,7 +14,7 @@
     <div class="row">
       <div class="col-sm-12">
         <app-tv-show-table [tvShowsSignal]="tvShowsSignalToDisplay()"
-                           (tvShowHighlighted)="addTvShowToFavorites($event)">
+                           (tvShowHighlighted)="toggleFavoriteTvShow($event)">
         </app-tv-show-table>
       </div>
   </div>
