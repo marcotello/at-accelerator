@@ -12,38 +12,32 @@ export class FavoritesService {
 
   private storageService = inject(StorageService);
 
-  public toggleFavorite(tvShowId: TvShow["id"], tvShows: TvShow[]): Signal<TvShow[]> {
-    for (const tvShow of tvShows) {
-      if (tvShow.id === tvShowId) {
-        tvShow.isFavorite = !tvShow.isFavorite;
-      }
+  public toggleFavorite(favoriteTvShowId: TvShow["id"], tvShows: TvShow[]): Signal<TvShow[]> {
+
+    let favoriteTvShowsFromStorage = this.getFavoriteTvShowsFromLocalStorage();
+
+    let favoriteTvShow = tvShows.find(tvShow => tvShow.id === favoriteTvShowId);
+
+    if(favoriteTvShowsFromStorage.has(favoriteTvShowId)) {
+      favoriteTvShow!.isFavorite = false;
+
+      favoriteTvShowsFromStorage.delete(favoriteTvShowId);
+    } else {
+      favoriteTvShow!.isFavorite = true;
+
+      favoriteTvShowsFromStorage.add(favoriteTvShowId);
     }
 
-    this.favoriteTvShowIDsSignal.set(tvShows);
-
-    this.removeTvShowsFromLocalStorage();
-
-    const favoriteTvShows = tvShows.filter(tvShow => tvShow.isFavorite);
-
-    this.saveTvShowsToLocalStorage(favoriteTvShows);
-
-    return this.favoriteTvShowIDsSignal.asReadonly();
-  }
-
-  public getFavoriteTvShows(): Signal<TvShow[]> {
-
-    const tvShowIds = this.getTvShowsFromLocalStorage();
-
-    this.favoriteTvShowIDsSignal.set(tvShowIds);
+    this.saveFavoriteTvShowsToLocalStorage(favoriteTvShowsFromStorage);
 
     return this.favoriteTvShowIDsSignal.asReadonly();
   }
 
   public mergeFavoriteTvShows(tvShows: TvShow[]): Signal<TvShow[]> {
-    const favoriteTvShows = this.getTvShowsFromLocalStorage();
+    const favoriteTvShows = this.getFavoriteTvShowsFromLocalStorage();
 
     for (const tvShow of tvShows) {
-      if (favoriteTvShows.find(favoriteTvShow => favoriteTvShow.id === tvShow.id)) {
+      if (favoriteTvShows.has(tvShow.id)) {
         tvShow.isFavorite = true;
       }
     }
@@ -53,15 +47,19 @@ export class FavoritesService {
     return this.favoriteTvShowIDsSignal.asReadonly();
   }
 
-  private saveTvShowsToLocalStorage(tvShowIds: TvShow[]) : void {
-    this.storageService.storeItem<TvShow[]>(FAVORITES_KEY, tvShowIds);
+  private saveFavoriteTvShowsToLocalStorage(tvShowIds: Set<number>) : void {
+
+    this.storageService.storeItem<number[]>(FAVORITES_KEY, Array.from(tvShowIds));
   }
 
-  private getTvShowsFromLocalStorage(): TvShow[] {
-    return this.storageService.getItem<TvShow[]>(FAVORITES_KEY) || [];
+  private getFavoriteTvShowsFromLocalStorage(): Set<number> {
+
+    const favoriteTvShows = this.storageService.getItem<number[]>(FAVORITES_KEY) || [];
+
+    return new Set<number>(favoriteTvShows);
   }
 
-  private removeTvShowsFromLocalStorage(): void {
-    this.storageService.removeItem<TvShow[]>(FAVORITES_KEY)
+  private clearFavoriteTvShowsFromLocalStorage(): void {
+    this.storageService.removeItem<number[]>(FAVORITES_KEY)
   }
 }
