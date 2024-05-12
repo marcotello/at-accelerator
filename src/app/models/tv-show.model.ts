@@ -8,4 +8,5 @@ export interface TvShow {
   network: string
   status: string
   image_thumbnail_path: string
+  isFavorite: boolean
 }

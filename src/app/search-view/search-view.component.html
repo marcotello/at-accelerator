@@ -13,8 +13,8 @@
     </div>
     <div class="row">
       <div class="col-sm-12">
-        <app-tv-show-table [tvShowsSignal]="tvShowsSignal()"
-                           [showSpinnerSignal]="tvShowTableSpinnerService.showSpinnerSignal()">
+        <app-tv-show-table [tvShowsSignal]="tvShowsSignalToDisplay()"
+                           (tvShowHighlighted)="toggleFavoriteTvShow($event)">
         </app-tv-show-table>
       </div>
   </div>

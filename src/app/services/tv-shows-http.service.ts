@@ -1,9 +1,9 @@
-import {Injectable, signal, Signal} from '@angular/core';
+import {inject, Injectable, signal, Signal} from '@angular/core';
 import {TvShow} from "../models/tv-show.model";
-import {delay, map} from "rxjs";
 import {TvShowsApiResponse} from "../models/tv-shows-api-response.model";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {TvShowTableSpinnerService} from "./tv-show-table-spinner.service";
+import {FavoritesService} from "./favorites.service";
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,10 @@ export class TvShowsHttpService {
 
   private searchTvShowsSignal = signal<TvShow[]>([]);
 
-  constructor(private http: HttpClient, private tvShowTableSpinnerService: TvShowTableSpinnerService) { }
+  private http = inject(HttpClient);
+  private tvShowTableSpinnerService = inject(TvShowTableSpinnerService);
+  private favoritesService = inject(FavoritesService);
+
 
   public searchTVShows(term: string): Signal<TvShow[]> {
 
@@ -29,9 +32,11 @@ export class TvShowsHttpService {
       queryParams = queryParams.append("q", term);
     }
 
-    this.http.get<TvShowsApiResponse>(this.SEARCH_TV_SHOWS_URL, {params:queryParams}).subscribe(data => {
-      this.searchTvShowsSignal.set(data.tv_shows);
-    });
+    this.http.get<TvShowsApiResponse>(this.SEARCH_TV_SHOWS_URL, {params:queryParams})
+      .subscribe(data => {
+        const mergedTvShows = this.favoritesService.mergeFavoriteTvShows(data.tv_shows);
+        this.searchTvShowsSignal.set(mergedTvShows());
+      });
 
     this.tvShowTableSpinnerService.hideSpinner();
 
