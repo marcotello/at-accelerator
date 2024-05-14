@@ -29,9 +29,5 @@ export class SearchViewComponent {
 
     this.tvShowsSignalToDisplay = this.tvShowsHttpService.searchTVShows(term);
   }
-
-  toggleFavoriteTvShow($event: any) {
-    this.tvShowsSignalToDisplay = this.favoritesService.toggleFavorite($event, this.tvShowsSignalToDisplay());
-  }
 }
 

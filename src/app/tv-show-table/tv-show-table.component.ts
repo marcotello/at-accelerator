@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, inject, input, Output, output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, input} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {TvShow} from "../models/tv-show.model";
 import {FavoritesService} from "../services/favorites.service";
@@ -13,16 +13,8 @@ import {FavoritesService} from "../services/favorites.service";
 })
 export class TvShowTableComponent {
 
-  private favoritesService = inject(FavoritesService);
+  protected favoritesService = inject(FavoritesService);
 
   tvShowsSignal = input.required<TvShow[]>();
   showSpinnerSignal = input<boolean>();
-
-  // New syntax not supported by WebStorm yet
-  // tvShowHighlighted = output<number>();
-  @Output() tvShowHighlighted = new EventEmitter<number>();
-
-  toggleFavorite(tvShowId: number): void {
-    this.tvShowHighlighted.emit(tvShowId);
-  }
 }
