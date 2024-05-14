@@ -32,11 +32,9 @@ export class TvShowsHttpService {
       queryParams = queryParams.append("q", term);
     }
 
-    this.http.get<TvShowsApiResponse>(this.SEARCH_TV_SHOWS_URL, {params:queryParams})
-      .subscribe(data => {
-        const mergedTvShows = this.favoritesService.mergeFavoriteTvShows(data.tv_shows);
-        this.searchTvShowsSignal.set(mergedTvShows());
-      });
+    this.http.get<TvShowsApiResponse>(this.SEARCH_TV_SHOWS_URL, {params:queryParams}).subscribe(data => {
+      this.searchTvShowsSignal.set(data.tv_shows);
+    });
 
     this.tvShowTableSpinnerService.hideSpinner();
 

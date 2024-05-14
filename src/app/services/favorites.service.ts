@@ -1,7 +1,8 @@
-import {inject, Injectable, Signal, signal} from '@angular/core';
+import {effect, inject, Injectable, signal} from '@angular/core';
 import {StorageService} from "./storage.service";
 import {TvShow} from "../models/tv-show.model";
 import { FAVORITES_KEY } from '../constants/application-contants';
+import {TvShowId, TvShowIds} from "../types/types";
 
 @Injectable({
   providedIn: 'root'
@@ -10,56 +11,26 @@ export class FavoritesService {
 
   private favoriteTvShowIDsSignal = signal<TvShow[]>([]);
 
-  private storageService = inject(StorageService);
+  private storageService = inject(StorageService<TvShowIds>);
 
-  public toggleFavorite(favoriteTvShowId: TvShow["id"], tvShows: TvShow[]): Signal<TvShow[]> {
+  private favoritesSignal = signal<TvShowIds>(this.storageService.get(FAVORITES_KEY));
+  readonly favorites = this.favoritesSignal.asReadonly();
 
-    let favoriteTvShowsFromStorage = this.getFavoriteTvShowsFromLocalStorage();
+  constructor() {
+    // Registering an effect to update localStorage so this code will run no matter
+    // where and when the signal value is updated - no need for duplication
+    effect(() => this.storageService.set(FAVORITES_KEY, this.favoritesSignal()));
+  }
 
-    let favoriteTvShow = tvShows.find(tvShow => tvShow.id === favoriteTvShowId);
+  toggleFavorite(id: TvShowId): void {
+    const index = this.favoritesSignal().indexOf(id);
 
-    if(favoriteTvShowsFromStorage.has(favoriteTvShowId)) {
-      favoriteTvShow!.isFavorite = false;
-
-      favoriteTvShowsFromStorage.delete(favoriteTvShowId);
+    if (index !== -1) {
+      this.favoritesSignal.update((favorites) => favorites.filter((favorite) => favorite !== id));
+      console.log(this.favoritesSignal());
     } else {
-      favoriteTvShow!.isFavorite = true;
-
-      favoriteTvShowsFromStorage.add(favoriteTvShowId);
+      this.favoritesSignal.update((favorites) => [...favorites, id]);
+      console.log(this.favoritesSignal());
     }
-
-    this.saveFavoriteTvShowsToLocalStorage(favoriteTvShowsFromStorage);
-
-    return this.favoriteTvShowIDsSignal.asReadonly();
-  }
-
-  public mergeFavoriteTvShows(tvShows: TvShow[]): Signal<TvShow[]> {
-    const favoriteTvShows = this.getFavoriteTvShowsFromLocalStorage();
-
-    for (const tvShow of tvShows) {
-      if (favoriteTvShows.has(tvShow.id)) {
-        tvShow.isFavorite = true;
-      }
-    }
-
-    this.favoriteTvShowIDsSignal.set(tvShows);
-
-    return this.favoriteTvShowIDsSignal.asReadonly();
-  }
-
-  private saveFavoriteTvShowsToLocalStorage(tvShowIds: Set<number>) : void {
-
-    this.storageService.storeItem<number[]>(FAVORITES_KEY, Array.from(tvShowIds));
-  }
-
-  private getFavoriteTvShowsFromLocalStorage(): Set<number> {
-
-    const favoriteTvShows = this.storageService.getItem<number[]>(FAVORITES_KEY) || [];
-
-    return new Set<number>(favoriteTvShows);
-  }
-
-  private clearFavoriteTvShowsFromLocalStorage(): void {
-    this.storageService.removeItem<number[]>(FAVORITES_KEY)
   }
 }
