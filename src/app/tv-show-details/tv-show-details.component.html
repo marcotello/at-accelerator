@@ -1,0 +1,21 @@
+<h1>{{tvShowDetails().name}} - {{tvShowDetails().country}} - {{tvShowDetails().start_date | date: 'yyyy'}}</h1>
+<hr class="doc">
+<div class="row">
+  <div class="col-sm-6">
+    <img src="{{tvShowDetails().image_path}}" alt="{{tvShowDetails().name}}">
+  </div>
+  <div class="col-sm-6">
+    <p>{{tvShowDetails().description}}</p>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12">
+    Rating: {{tvShowDetails().rating}}/10 (rated by {{tvShowDetails().rating_count}} people
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12">
+    <button class="primary" (click)="router.navigate(['/search']);"><< Back </button>
+  </div>
+</div>
+<p>{{tvShowDetails().id}}</p>

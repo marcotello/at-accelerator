@@ -30,7 +30,9 @@
           <td data-label="Year started">{{tvShow.start_date | date: 'yyyy'}}</td>
           <td data-label="Status">{{ tvShow.status }}</td>
           <td data-label="Actions">
-            <span class="icon-info"></span>
+            <a [routerLink]="['/details', tvShow.id]">
+              <span class="icon-info"></span>
+            </a>
             <span class="icon-bookmark" (mouseup)="favoritesService.toggleFavorite(tvShow.id)"
                   [class.highlight]="favoritesService.favorites().includes(tvShow.id)">
             </span>
