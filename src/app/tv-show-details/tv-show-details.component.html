@@ -1,21 +1,31 @@
-<h1>{{tvShowDetails().name}} - {{tvShowDetails().country}} - {{tvShowDetails().start_date | date: 'yyyy'}}</h1>
-<hr class="doc">
-<div class="row">
-  <div class="col-sm-6">
-    <img src="{{tvShowDetails().image_path}}" alt="{{tvShowDetails().name}}">
+<div class="show-details">
+  <div class="show-details-title">
+    <h1>{{tvShowDetails().name}} - {{tvShowDetails().country}} - {{tvShowDetails().start_date | date: 'yyyy'}}</h1>
+    <hr class="doc">
   </div>
-  <div class="col-sm-6">
-    <p>{{tvShowDetails().description}}</p>
+  <div class="show-details-body">
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="show-details-thumbnail">
+          <img src="{{tvShowDetails().image_thumbnail_path}}" alt="{{tvShowDetails().name}}">
+        </div>
+      </div>
+      <div class="col-sm-6" [innerHTML]="tvShowDetails().description">
+      </div>
+    </div>
+    <div class="show-details-rating">
+      <div class="row">
+        <div class="col-sm-12">
+          Rating: {{tvShowDetails().rating}}/10 (rated by {{tvShowDetails().rating_count}} people)
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="show-details-action">
+    <div class="row">
+      <div class="col-sm-12">
+        <button class="primary" (click)="router.navigate(['/search']);"><< Back </button>
+      </div>
+    </div>
   </div>
 </div>
-<div class="row">
-  <div class="col-sm-12">
-    Rating: {{tvShowDetails().rating}}/10 (rated by {{tvShowDetails().rating_count}} people
-  </div>
-</div>
-<div class="row">
-  <div class="col-sm-12">
-    <button class="primary" (click)="router.navigate(['/search']);"><< Back </button>
-  </div>
-</div>
-<p>{{tvShowDetails().id}}</p>
