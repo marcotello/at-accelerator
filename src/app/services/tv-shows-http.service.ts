@@ -6,8 +6,6 @@ import {TvShowTableSpinnerService} from "./tv-show-table-spinner.service";
 import {FavoritesService} from "./favorites.service";
 import {TvShowDetails} from "../models/tv-show-details.model";
 import {TvShowDetailsApiResponse} from "../models/tv-show-details-api-response.model";
-import {toSignal} from "@angular/core/rxjs-interop";
-import {map} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +17,8 @@ export class TvShowsHttpService {
   private TV_SHOW_DETAILS_URL = this.BASE_URL + '/show-details';
 
   private searchTvShowsSignal = signal<TvShow[]>([]);
-  private tvShowDetailsSignal = signal<TvShowDetails>({} as TvShowDetails);
+  // @ts-ignore
+  private tvShowDetailsSignal = signal<TvShowDetails>();
 
   private http = inject(HttpClient);
   private tvShowTableSpinnerService = inject(TvShowTableSpinnerService);

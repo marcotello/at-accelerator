@@ -14,5 +14,6 @@ export const fetchTvShowDetailsResolver: ResolveFn<Signal<TvShowDetails>> = (
   }
 
   inject(Router).navigate(['/favorites']);
-  return signal<TvShowDetails>({} as TvShowDetails);
+  // @ts-ignore
+  return signal<TvShowDetails>();
 };

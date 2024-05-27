@@ -7,7 +7,7 @@
     <div class="row">
       <div class="col-sm-6">
         <div class="show-details-thumbnail">
-          <img src="{{tvShowDetails().image_thumbnail_path}}" alt="{{tvShowDetails().name}}">
+          <img [src]="tvShowDetails().image_thumbnail_path" alt="{{tvShowDetails().name}}">
         </div>
       </div>
       <div class="col-sm-6" [innerHTML]="tvShowDetails().description">
@@ -16,7 +16,7 @@
     <div class="show-details-rating">
       <div class="row">
         <div class="col-sm-12">
-          Rating: {{tvShowDetails().rating}}/10 (rated by {{tvShowDetails().rating_count}} people)
+          Rating: {{tvShowDetails().rating | number}}/10 (rated by {{tvShowDetails().rating_count}} people)
         </div>
       </div>
     </div>
@@ -24,7 +24,7 @@
   <div class="show-details-action">
     <div class="row">
       <div class="col-sm-12">
-        <button class="primary" (click)="router.navigate(['/search']);"><< Back </button>
+        <button class="primary" (click)="back();"><< Back </button>
       </div>
     </div>
   </div>
