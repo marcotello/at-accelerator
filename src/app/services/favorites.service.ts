@@ -27,10 +27,8 @@ export class FavoritesService {
 
     if (index !== -1) {
       this.favoritesSignal.update((favorites) => favorites.filter((favorite) => favorite !== id));
-      console.log(this.favoritesSignal());
     } else {
       this.favoritesSignal.update((favorites) => [...favorites, id]);
-      console.log(this.favoritesSignal());
     }
   }
 }

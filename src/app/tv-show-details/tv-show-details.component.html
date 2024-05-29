@@ -16,8 +16,14 @@
     <div class="show-details-rating">
       <div class="row">
         <div class="col-sm-12">
-          Rating: {{tvShowDetails().rating | number}}/10 (rated by {{tvShowDetails().rating_count}} people)
+          Rating: {{tvShowDetails().rating | number: '1.0-2'}}/10 (rated by {{tvShowDetails().rating_count}} people)
         </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        {{episodeDetailsSignal()?.totalEpisodes | i18nPlural:{"=0": "No episodes", "=1": "1 episode", "other": "# episodes"} }} -
+        {{episodeDetailsSignal()?.totalSeasons | i18nPlural:{"=0": "No seasons", "=1": "1 season", "other": "# seasons"} }}
       </div>
     </div>
   </div>

@@ -6,6 +6,8 @@ import {TvShowTableSpinnerService} from "./tv-show-table-spinner.service";
 import {FavoritesService} from "./favorites.service";
 import {TvShowDetails} from "../models/tv-show-details.model";
 import {TvShowDetailsApiResponse} from "../models/tv-show-details-api-response.model";
+import {tap} from "rxjs/operators";
+import {EpisodeDetails} from "../models/episode-details.model";
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +19,8 @@ export class TvShowsHttpService {
   private TV_SHOW_DETAILS_URL = this.BASE_URL + '/show-details';
 
   private searchTvShowsSignal = signal<TvShow[]>([]);
-  // @ts-ignore
-  private tvShowDetailsSignal = signal<TvShowDetails>();
+  private tvShowDetailsSignal = signal<TvShowDetails | null>(null);
+  private episodeDetailsSignal = signal<EpisodeDetails | null>(null);
 
   private http = inject(HttpClient);
   private tvShowTableSpinnerService = inject(TvShowTableSpinnerService);
@@ -37,29 +39,42 @@ export class TvShowsHttpService {
       queryParams = queryParams.append("q", term);
     }
 
-    this.http.get<TvShowsApiResponse>(this.SEARCH_TV_SHOWS_URL, {params:queryParams}).subscribe(data => {
-      this.searchTvShowsSignal.set(data.tv_shows);
-    });
+    this.http.get<TvShowsApiResponse>(this.SEARCH_TV_SHOWS_URL, {params:queryParams})
+      .subscribe(data => {
+        this.searchTvShowsSignal.set(data.tv_shows);
+      });
 
     this.tvShowTableSpinnerService.hideSpinner();
 
     return this.searchTvShowsSignal.asReadonly();
   }
 
-  public getTvShowDetails(tvShowId: string): Signal<TvShowDetails> {
+  public getTvShowDetails(tvShowId: string): Signal<TvShowDetails | null> {
 
-    this.tvShowDetailsSignal.set({} as TvShowDetails);
+    this.tvShowDetailsSignal.set(null);
+    this.episodeDetailsSignal.set(null);
 
     let queryParams = new HttpParams().append("q", tvShowId);
 
     this.http.get<TvShowDetailsApiResponse>(this.TV_SHOW_DETAILS_URL, {params: queryParams})
+      .pipe(
+        tap(response => {
+          const totalEpisodes = response.tvShow.episodes.length;
+          const totalSeasons = response.tvShow.episodes.reduce((maxSeason, episode) => {
+            return Math.max(maxSeason, episode.season);
+          }, 0);
+
+          this.episodeDetailsSignal.set({totalSeasons, totalEpisodes});
+        })
+      )
       .subscribe(response => {
-        console.log(response.tvShow);
         this.tvShowDetailsSignal.set(response.tvShow);
       });
 
-    console.log(this.tvShowDetailsSignal());
-
     return this.tvShowDetailsSignal.asReadonly();
+  }
+
+  public getEpisodeDetails(): Signal<EpisodeDetails | null> {
+    return this.episodeDetailsSignal.asReadonly();
   }
 }
