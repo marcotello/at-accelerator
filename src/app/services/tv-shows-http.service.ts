@@ -6,8 +6,9 @@ import {TvShowTableSpinnerService} from "./tv-show-table-spinner.service";
 import {FavoritesService} from "./favorites.service";
 import {TvShowDetails} from "../models/tv-show-details.model";
 import {TvShowDetailsApiResponse} from "../models/tv-show-details-api-response.model";
-import {tap} from "rxjs/operators";
+import {map, tap} from "rxjs/operators";
 import {EpisodeDetails} from "../models/episode-details.model";
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -54,24 +55,31 @@ export class TvShowsHttpService {
     this.tvShowDetailsSignal.set(null);
     this.episodeDetailsSignal.set(null);
 
-    let queryParams = new HttpParams().append("q", tvShowId);
-
-    this.http.get<TvShowDetailsApiResponse>(this.TV_SHOW_DETAILS_URL, {params: queryParams})
+    this.getTvShowDetailsFromApi(tvShowId)
       .pipe(
-        tap(response => {
-          const totalEpisodes = response.tvShow.episodes.length;
-          const totalSeasons = response.tvShow.episodes.reduce((maxSeason, episode) => {
+        tap(tvShowDetails => {
+          const totalEpisodes = tvShowDetails.episodes.length;
+          const totalSeasons = tvShowDetails.episodes.reduce((maxSeason, episode) => {
             return Math.max(maxSeason, episode.season);
           }, 0);
 
           this.episodeDetailsSignal.set({totalSeasons, totalEpisodes});
         })
       )
-      .subscribe(response => {
-        this.tvShowDetailsSignal.set(response.tvShow);
+      .subscribe(tvShowDetails => {
+        this.tvShowDetailsSignal.set(tvShowDetails);
       });
 
     return this.tvShowDetailsSignal.asReadonly();
+  }
+
+  public getTvShowDetailsFromApi(tvShowId: string): Observable<TvShowDetails> {
+    let queryParams = new HttpParams().append("q", tvShowId);
+
+    return this.http.get<TvShowDetailsApiResponse>(this.TV_SHOW_DETAILS_URL, {params: queryParams})
+      .pipe(
+        map(response => response.tvShow)
+      );
   }
 
   public getEpisodeDetails(): Signal<EpisodeDetails | null> {
