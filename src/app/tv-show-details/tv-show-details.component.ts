@@ -1,4 +1,4 @@
-import {Component, inject, input, signal, Signal} from '@angular/core';
+import {Component, inject, Signal} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {TvShowDetails} from "../models/tv-show-details.model";
 import {DatePipe, DecimalPipe, I18nPluralPipe} from "@angular/common";
