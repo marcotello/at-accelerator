@@ -5,20 +5,17 @@ import {inject} from "@angular/core";
 import {StorageService} from "../services/storage.service";
 import {TvShowIds} from "../types/types";
 import {TvShowsHttpService} from "../services/tv-shows-http.service";
+import {forkJoin, Observable} from "rxjs";
 
-export const fetchFavoritesDetailsResolver: ResolveFn<TvShowDetails[]> = (
+export const fetchFavoritesDetailsResolver: ResolveFn<Observable<TvShowDetails[]>> = (
   route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
-): TvShowDetails[] => {
+): Observable<TvShowDetails[]> => {
 
-  let favoritesTvShowDetails: TvShowDetails[] = [];
+  const tvShowHttpService = inject(TvShowsHttpService);
+  const favoriteTvShowIds = inject(StorageService<TvShowIds>).get(FAVORITES_KEY) as string[];
 
-  const favoriteTvShowIds = inject(StorageService<TvShowIds>).get(FAVORITES_KEY);
+  const tvShowDetails$ = favoriteTvShowIds.map(tvShowId => tvShowHttpService.getTvShowDetailsFromApi(tvShowId));
 
-  inject(TvShowsHttpService).getTvShowDetailsFromApi(favoriteTvShowIds[0])
-    .subscribe((tvShowDetails: TvShowDetails) => {
-      favoritesTvShowDetails.push(tvShowDetails);
-    });
-
-  return favoritesTvShowDetails;
+  return forkJoin(tvShowDetails$);
 };

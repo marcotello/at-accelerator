@@ -1,0 +1,17 @@
+.favorites-container {
+
+  .favorites-grid {
+    display: flex;
+    flex-wrap: wrap;
+
+    .favorites-card {
+      height: 285px;
+      display: flex;
+      align-items: center;
+
+      .card {
+        margin: 0 0;
+      }
+    }
+  }
+}

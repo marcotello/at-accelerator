@@ -1,9 +1,15 @@
-<div class="card">
-  <div class="section">
-    <h3 class="doc">{{favorites[0].name}}</h3>
-  </div>
-  <img [src]="favorites[0].image_thumbnail_path" alt="{{favorites[0].name}}">
-  <div class="section">
-    Next episode
+<div class="favorites-container">
+  <div class="favorites-grid">
+    <div class="favorites-card">
+      <div class="card">
+        <div class="section">
+          <h3 class="doc">{{favorites[0].name}}</h3>
+        </div>
+        <img [src]="favorites[0].image_thumbnail_path" alt="{{favorites[0].name}}">
+        <div class="section">
+          Next episode
+        </div>
+      </div>
+    </div>
   </div>
 </div>
