@@ -20,7 +20,7 @@ const routes: Routes = [
   {
     path: "favorites",
     component: FavoritesViewComponent,
-    resolve: { favoritesTvShowDetails: fetchFavoritesDetailsResolver},
+    resolve: { favoriteTvShows: fetchFavoritesDetailsResolver},
   },
   {
     path: "details/:tvShowId",
@@ -30,7 +30,9 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {
+    bindToComponentInputs: true
+  })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

@@ -1,5 +1,5 @@
-import {Component, inject} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {Component, Input} from '@angular/core';
+import {TvShowDetails} from "../models/tv-show-details.model";
 
 @Component({
   selector: 'app-favorites-view',
@@ -8,6 +8,7 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class FavoritesViewComponent {
 
-  protected favorites = inject(ActivatedRoute).snapshot.data['favoritesTvShowDetails'];
+  @Input()
+  protected favoriteTvShows!: TvShowDetails[];
 
 }
