@@ -1,6 +1,5 @@
 import {effect, inject, Injectable, signal} from '@angular/core';
 import {StorageService} from "./storage.service";
-import {TvShow} from "../models/tv-show.model";
 import { FAVORITES_KEY } from '../constants/application-contants';
 import {TvShowId, TvShowIds} from "../types/types";
 
@@ -8,8 +7,6 @@ import {TvShowId, TvShowIds} from "../types/types";
   providedIn: 'root'
 })
 export class FavoritesService {
-
-  private favoriteTvShowIDsSignal = signal<TvShow[]>([]);
 
   private storageService = inject(StorageService<TvShowIds>);
 
