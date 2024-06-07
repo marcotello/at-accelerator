@@ -26,6 +26,10 @@
           .favorites-card-controls {
             width: 10%;
             text-align: center;
+
+            .icon-bookmark {
+              cursor: pointer;
+            }
           }
         }
 

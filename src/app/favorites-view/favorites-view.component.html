@@ -23,7 +23,11 @@
           <div class="favorites-card-image" [ngStyle]="{'background-image': 'url(' + tvShow.image_thumbnail_path + ')'}">
           </div>
           <div class="section">
-            Next episode
+            @if (tvShow.status === 'In Development') {
+              Next episode: TBD
+            } @else {
+              Next episode: {{tvShow.countdown?.air_date | date: 'MMM d, y'}}
+            }
           </div>
         </div>
       </div>

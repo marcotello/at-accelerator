@@ -30,25 +30,15 @@ export const fetchFavoritesDetailsResolver: ResolveFn<Observable<TvShowDetails[]
           'Ended',
           'Returning Series'
         ];
-
-        // TODO: sort based on cuntdown. cuntdown is type Episode with a date.
-
-        const getNextEpisodeAirDate = (episodes: Episode[]): Date | null => {
-          const today = new Date();
-          const futureEpisodes = episodes
-            .map(episode => new Date(episode.air_date))
-            .filter(airDate => airDate >= today);
-          return futureEpisodes.length > 0 ? futureEpisodes[0] : null;
-        };
-
+        
         return tvShowDetails.sort((tvShow1: TvShowDetails, tvShow2: TvShowDetails) => {
           const tvShow1StatusIndex = order.indexOf(tvShow1.status);
           const tvShow2StatusIndex = order.indexOf(tvShow2.status);
 
           if (tvShow1StatusIndex === tvShow2StatusIndex) {
             if(tvShow1StatusIndex === 1) {
-              const tvShow1NextEpisodeDate = getNextEpisodeAirDate(tvShow1.episodes);
-              const tvShow2NextEpisodeDate = getNextEpisodeAirDate(tvShow2.episodes);
+              const tvShow1NextEpisodeDate = getNextEpisodeAirDate(tvShow1.countdown);
+              const tvShow2NextEpisodeDate = getNextEpisodeAirDate(tvShow2.countdown);
 
               if (tvShow1NextEpisodeDate && tvShow2NextEpisodeDate) {
                 return tvShow1NextEpisodeDate.getTime() - tvShow2NextEpisodeDate.getTime();
@@ -67,4 +57,15 @@ export const fetchFavoritesDetailsResolver: ResolveFn<Observable<TvShowDetails[]
         });
       })
     );
+};
+
+const getNextEpisodeAirDate = (countdown: Episode | null): Date | null => {
+  if (!countdown) {
+    return null;
+  }
+
+  const today = new Date();
+  const nextEpisodeDate = new Date(countdown.air_date);
+
+  return nextEpisodeDate >= today ? nextEpisodeDate : null;
 };
