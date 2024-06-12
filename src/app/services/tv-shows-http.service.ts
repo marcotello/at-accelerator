@@ -3,7 +3,6 @@ import {TvShow} from "../models/tv-show.model";
 import {TvShowsApiResponse} from "../models/tv-shows-api-response.model";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {TvShowTableSpinnerService} from "./tv-show-table-spinner.service";
-import {FavoritesService} from "./favorites.service";
 import {TvShowDetails} from "../models/tv-show-details.model";
 import {TvShowDetailsApiResponse} from "../models/tv-show-details-api-response.model";
 import {map, tap} from "rxjs/operators";
@@ -25,7 +24,6 @@ export class TvShowsHttpService {
 
   private http = inject(HttpClient);
   private tvShowTableSpinnerService = inject(TvShowTableSpinnerService);
-  private favoritesService = inject(FavoritesService);
 
 
   public searchTVShows(term: string): Signal<TvShow[]> {
