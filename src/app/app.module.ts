@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { FavoritesViewComponent } from './favorites-view/favorites-view.component';
 import { HttpClientModule } from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
+import {TvShowCardComponent} from "./tv-show-card/tv-show-card.component";
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import {FormsModule} from "@angular/forms";
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    TvShowCardComponent
   ],
   bootstrap: [AppComponent]
 })

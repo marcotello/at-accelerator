@@ -1,7 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {TvShowDetails} from "../models/tv-show-details.model";
 import {FavoritesService} from "../services/favorites.service";
-import {TvShowId} from "../types/types";
 
 @Component({
   selector: 'app-favorites-view',
@@ -15,8 +14,8 @@ export class FavoritesViewComponent {
   @Input()
   protected favoriteTvShows!: TvShowDetails[];
 
-  removeTvShowFromFavorites(tvShowId: TvShowId) {
-    this.favoritesService.toggleFavorite(tvShowId)
-    this.favoriteTvShows = this.favoriteTvShows.filter((tvShow) => tvShow.id !== tvShowId)
+  removeTvShowFromFavorites($event: number) {
+    this.favoritesService.toggleFavorite($event)
+    this.favoriteTvShows = this.favoriteTvShows.filter((tvShow) => tvShow.id !== $event)
   }
 }

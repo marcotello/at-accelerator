@@ -2,11 +2,12 @@ import {effect, inject, Injectable, signal} from '@angular/core';
 import {StorageService} from "./storage.service";
 import { FAVORITES_KEY } from '../constants/application-contants';
 import {TvShowId, TvShowIds} from "../types/types";
-import {BehaviorSubject, forkJoin, Observable, shareReplay, switchMap} from "rxjs";
+import {forkJoin, Observable, shareReplay, switchMap} from "rxjs";
 import {TvShowDetails} from "../models/tv-show-details.model";
 import {TvShowsHttpService} from "./tv-shows-http.service";
-import {map} from "rxjs/operators";
+import {map, tap} from "rxjs/operators";
 import {Episode} from "../models/episode.model";
+import {toObservable} from "@angular/core/rxjs-interop";
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class FavoritesService {
   private favoritesSignal = signal<TvShowIds>(this.storageService.get(FAVORITES_KEY));
   readonly favorites = this.favoritesSignal.asReadonly();
 
-  private refreshFavoriteTvShowCache$ = new BehaviorSubject<void>(undefined);
+  private refreshFavoriteTvShowCache$ = toObservable(this.favoritesSignal);
   private favoriteTvShows$: Observable<TvShowDetails[]>;
 
   constructor() {
@@ -27,7 +28,6 @@ export class FavoritesService {
     // where and when the signal value is updated - no need for duplication
     effect(() => {
       this.storageService.set(FAVORITES_KEY, this.favoritesSignal());
-      this.refreshFavoriteTvShowCache$.next();
     });
 
     this.favoriteTvShows$ = this.getFavoriteTvShowsDetailsWithCache();
@@ -48,9 +48,9 @@ export class FavoritesService {
   }
 
   getFavoriteTvShowsDetails(): Observable<TvShowDetails[]> {
-    const favoriteTvShowIds = this.storageService.get(FAVORITES_KEY) as string[];
+    const favoriteTvShowIds = this.favoritesSignal();
 
-    const tvShowDetails$ = favoriteTvShowIds.map(tvShowId => this.tvShowHttpService.getTvShowDetailsFromApi(tvShowId));
+    const tvShowDetails$ = favoriteTvShowIds.map(tvShowId => this.tvShowHttpService.getTvShowDetailsFromApi('' + tvShowId));
 
     return forkJoin(tvShowDetails$)
       .pipe(
