@@ -3,10 +3,10 @@ import {inject, signal, Signal} from "@angular/core";
 import {TvShowDetails} from "../models/tv-show-details.model";
 import {TvShowsHttpService} from "../services/tv-shows-http.service";
 
-export const fetchTvShowDetailsResolver: ResolveFn<Signal<TvShowDetails>> = (
+export const fetchTvShowDetailsResolver: ResolveFn<Signal<TvShowDetails | null>> = (
   route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
-): Signal<TvShowDetails> => {
+): Signal<TvShowDetails | null> => {
   const tvShowId = route.paramMap.get('tvShowId');
 
   if(tvShowId !== null) {
@@ -14,6 +14,6 @@ export const fetchTvShowDetailsResolver: ResolveFn<Signal<TvShowDetails>> = (
   }
 
   inject(Router).navigate(['/favorites']);
-  // @ts-ignore
-  return signal<TvShowDetails>();
+
+  return signal<TvShowDetails | null>(null);
 };

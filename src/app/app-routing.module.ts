@@ -3,8 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import {SearchViewComponent} from './search-view/search-view.component';
 import {FavoritesViewComponent} from "./favorites-view/favorites-view.component";
 import {fetchPopularShowsResolver} from "./resolvers/fetch-popular-shows.resolver";
-import {TvShowDetailsComponent} from "./tv-show-details/tv-show-details.component";
 import {fetchTvShowDetailsResolver} from "./resolvers/fetch-tv-show-details.resolver";
+import {fetchFavoritesDetailsResolver} from "./resolvers/fetch-favorites-details.resolver";
 
 const routes: Routes = [
   {
@@ -19,17 +19,20 @@ const routes: Routes = [
   },
   {
     path: "favorites",
-    component: FavoritesViewComponent
+    component: FavoritesViewComponent,
+    resolve: { favoriteTvShows: fetchFavoritesDetailsResolver},
   },
   {
     path: "details/:tvShowId",
-    component: TvShowDetailsComponent,
+    loadComponent: () => import('./tv-show-details/tv-show-details.component'),
     resolve: { tvShowDetails: fetchTvShowDetailsResolver},
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {
+    bindToComponentInputs: true
+  })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

@@ -1,19 +1,23 @@
-import {Component, inject, input, Signal} from '@angular/core';
+import {Component, inject, Signal} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {TvShowDetails} from "../models/tv-show-details.model";
-import {DatePipe, DecimalPipe} from "@angular/common";
+import {DatePipe, DecimalPipe, I18nPluralPipe} from "@angular/common";
+import {TvShowsHttpService} from "../services/tv-shows-http.service";
 
 @Component({
   selector: 'app-tv-show-details',
   standalone: true,
   imports: [
     DatePipe,
-    DecimalPipe
+    DecimalPipe,
+    I18nPluralPipe
   ],
   templateUrl: './tv-show-details.component.html',
   styleUrl: './tv-show-details.component.css'
 })
-export class TvShowDetailsComponent {
+export default class TvShowDetailsComponent {
+
+  protected episodeDetailsSignal = inject(TvShowsHttpService).getEpisodeDetails();
 
   protected router = inject(Router);
 

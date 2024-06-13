@@ -1,25 +1,17 @@
 import {Episode} from "./episode.model";
+import {TvShow} from "./tv-show.model";
 
-export interface TvShowDetails {
-  id: number
-  name: string
-  permalink: string
-  url: string
-  description: string
-  description_source: any
-  start_date: string
-  end_date: string
-  country: string
-  status: string
-  runtime: number
-  network: string
-  youtube_link: string
-  image_path: string
-  image_thumbnail_path: string
-  rating: number
-  rating_count: string
-  countdown: any
-  genres: string[]
-  pictures: any[]
-  episodes: Episode[]
+export interface TvShowDetails extends TvShow {
+  url: string;
+  description: string;
+  description_source: string;
+  runtime: number;
+  youtube_link: string;
+  image_path: string;
+  rating: number;
+  rating_count: string;
+  countdown: null | Episode;
+  genres: string[];
+  pictures: any[];
+  episodes: Episode[];
 }

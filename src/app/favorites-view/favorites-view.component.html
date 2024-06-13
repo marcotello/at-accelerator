@@ -1,1 +1,7 @@
-<p>favorites-view works!</p>
+<div class="favorites-container">
+  <div class="favorites-grid">
+    @for (tvShow of favoriteTvShows; track tvShow.id) {
+      <app-tv-show-card [tvShow]="tvShow" (tvShowId)="removeTvShowFromFavorites($event)"></app-tv-show-card>
+    }
+  </div>
+</div>
