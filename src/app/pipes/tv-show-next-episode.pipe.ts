@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import {TvShowStatus} from "../types/enums";
+import {formatDistanceToNow} from "date-fns";
 
 @Pipe({
   name: 'tvShowNextEpisode',
@@ -20,7 +21,7 @@ export class TvShowNextEpisodePipe implements PipeTransform {
       return 'No next episode date';
     }
 
-    return `Next episode: ${nextEpisodeDate}`;
+    return `Next episode ${formatDistanceToNow(new Date(nextEpisodeDate!), {addSuffix: true})}`;
   }
 
   private IsShowNoLongerAvaialble(status: string) {
