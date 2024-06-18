@@ -1,7 +1,7 @@
 <div class="favorites-container">
   <div class="favorites-grid">
-    @for (tvShow of favoriteTvShows; track tvShow.id) {
-      <app-tv-show-card [tvShow]="tvShow" (tvShowId)="removeTvShowFromFavorites($event)"></app-tv-show-card>
+    @for (tvShow of (favoriteTvShows$ | async); track tvShow.id) {
+      <app-tv-show-card [tvShow]="tvShow"></app-tv-show-card>
     }
   </div>
 </div>
