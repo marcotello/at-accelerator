@@ -1,22 +1,15 @@
-import {Directive, EventEmitter, HostBinding, HostListener, Input, OnInit, Output} from '@angular/core';
+import {Directive, HostBinding, HostListener, Input} from '@angular/core';
 import {FavoritesService} from "../services/favorites.service";
 
 @Directive({
   selector: '[appToggleFavorite]',
   standalone: true
 })
-export class ToggleFavoriteDirective implements OnInit {
-  @Input() tvShowId!: number;
-  @Input() isFavorite: boolean = false;
+export class ToggleFavoriteDirective {
+  @Input({required: true, alias: 'appToggleFavorite'})
+  tvShowId!: number;
 
   constructor(private favoritesService: FavoritesService) {}
-
-  ngOnInit(): void {
-    if (!this.tvShowId) {
-      console.error('Error: appToggleFavorite directive requires a tvShowId input string.');
-      throw new Error('appToggleFavorite directive requires a tvShowId input string.');
-    }
-  }
 
   @HostBinding('class')
   myClass = '';

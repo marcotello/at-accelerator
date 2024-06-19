@@ -30,7 +30,7 @@
             <a [routerLink]="['/details', tvShow.id]">
               <span class="icon-info"></span>
             </a>
-            <span class="icon-bookmark" appToggleFavorite [tvShowId]="tvShow.id"
+            <span class="icon-bookmark" [appToggleFavorite]="tvShow.id"
                   [appToggleHighlight]="favoritesService.favorites().includes(tvShow.id)">
             </span>
             <span class="icon-link"></span>
