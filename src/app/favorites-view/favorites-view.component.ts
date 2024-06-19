@@ -1,6 +1,7 @@
-import {Component, Input} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {TvShowDetails} from "../models/tv-show-details.model";
 import {FavoritesService} from "../services/favorites.service";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-favorites-view',
@@ -9,13 +10,5 @@ import {FavoritesService} from "../services/favorites.service";
 })
 export class FavoritesViewComponent {
 
-  constructor(private favoritesService: FavoritesService) {}
-
-  @Input()
-  protected favoriteTvShows!: TvShowDetails[];
-
-  removeTvShowFromFavorites($event: number) {
-    this.favoritesService.toggleFavorite($event)
-    this.favoriteTvShows = this.favoriteTvShows.filter((tvShow) => tvShow.id !== $event)
-  }
+  protected favoriteTvShows$: Observable<TvShowDetails[]> =  inject(FavoritesService).getMyFavoriteTvShows();
 }

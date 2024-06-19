@@ -12,7 +12,8 @@
             </a>
           </div>
           <div>
-            <span class="icon-bookmark highlight" (mouseup)="removeTvShowFromFavorites(tvShow.id)"></span>
+            <span class="icon-bookmark highlight" [appToggleFavorite]="tvShow.id">
+            </span>
           </div>
         </div>
       </div>
@@ -20,11 +21,7 @@
     <div class="favorites-card-image" [ngStyle]="{'background-image': 'url(' + tvShow.image_thumbnail_path + ')'}">
     </div>
     <div class="section">
-      @if (tvShow.status === 'In Development') {
-        Next episode: TBD
-      } @else {
-        Next episode: {{tvShow.countdown?.air_date | date: 'MMM d, y'}}
-      }
+      {{tvShow.countdown?.air_date | tvShowNextEpisode: tvShow.status}}
     </div>
   </div>
 </div>
