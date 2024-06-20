@@ -6,4 +6,4 @@ import {inject, Signal} from "@angular/core";
 export const fetchPopularShowsResolver: ResolveFn<Signal<TvShow[]>> = (
   route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
-): Signal<TvShow[]> => inject(TvShowsHttpService).searchTVShows('');
+): Signal<TvShow[]> => inject(TvShowsHttpService).getMostPopularTvShows(1);

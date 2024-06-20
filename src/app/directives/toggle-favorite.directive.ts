@@ -11,9 +11,6 @@ export class ToggleFavoriteDirective {
 
   constructor(private favoritesService: FavoritesService) {}
 
-  @HostBinding('class')
-  myClass = '';
-
   @HostListener('click')
   onClick(){
     this.favoritesService.toggleFavorite(this.tvShowId);
