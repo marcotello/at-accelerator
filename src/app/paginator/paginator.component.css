@@ -1,0 +1,24 @@
+.paginator-container {
+  display: flex;
+  justify-content: space-between;
+  padding-right: 12px;
+
+  .paginator-button {
+    flex: 1 1 auto;
+    text-align: center;
+
+    button {
+      width: 100%;
+      height: 50px;
+      border-top: 1px grey solid;
+      border-left: 1px grey solid;
+      border-bottom: 1px grey solid;
+    }
+
+    &:last-child {
+      button {
+        border-right: 1px grey solid;
+      }
+    }
+  }
+}

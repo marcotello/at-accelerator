@@ -7,12 +7,13 @@ import {ActivatedRoute} from "@angular/router";
 import {TvShow} from "../models/tv-show.model";
 import {TvShowTableSpinnerService} from "../services/tv-show-table-spinner.service";
 import {FavoritesService} from "../services/favorites.service";
+import {PaginatorComponent} from "../paginator/paginator.component";
 
 @Component({
   selector: 'app-search-view',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CommonModule, TvShowTableComponent, FormsModule],
+  imports: [CommonModule, TvShowTableComponent, FormsModule, PaginatorComponent],
   templateUrl: './search-view.component.html',
   styleUrls: ['./search-view.component.css']
 })
