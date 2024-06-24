@@ -4,5 +4,6 @@ export enum TvShowStatus {
   ToBeDetermined = 'To Be Determined',
   Canceled = 'Canceled/Ended',
   Ended = 'Ended',
-  ReturningSeries = 'Returning Series'
+  ReturningSeries = 'Returning Series',
+  NoStatus = ''
 }

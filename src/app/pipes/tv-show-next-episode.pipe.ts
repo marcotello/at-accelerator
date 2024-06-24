@@ -27,7 +27,8 @@ export class TvShowNextEpisodePipe implements PipeTransform {
   private IsShowNoLongerAvailable(status: string) {
     return status === TvShowStatus.Canceled ||
       status === TvShowStatus.Ended ||
-      status === TvShowStatus.ToBeDetermined;
+      status === TvShowStatus.ToBeDetermined ||
+      status === TvShowStatus.NoStatus;
   }
 
   private IsShowRunningWithNoEpisodes(nextEpisodeDate: string, status: string) {

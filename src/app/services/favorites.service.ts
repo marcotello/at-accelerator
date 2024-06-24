@@ -74,7 +74,8 @@ export class FavoritesService {
       'To Be Determined',
       'Canceled/Ended',
       'Ended',
-      'Returning Series'
+      'Returning Series',
+      ''
     ];
 
     return tvShowDetails.sort((tvShow1: TvShowDetails, tvShow2: TvShowDetails) => {
