@@ -18,16 +18,16 @@ export class TvShowsHttpService {
   private TV_SHOW_DETAILS_URL = this.BASE_URL + '/show-details';
   private MOST_POPULAR_TV_SHOWs_URL = this.BASE_URL + '/most-popular';
 
-  private searchTvShowsSignal = signal<TvShow[]>([]);
+  private tvShowsSignal = signal<TvShowsApiResponse | null>(null);
 
   private http = inject(HttpClient);
   private tvShowTableSpinnerService = inject(TvShowTableSpinnerService);
 
 
-  public searchTVShows(term: string): Signal<TvShow[]> {
+  public searchTVShows(term: string): Signal<TvShowsApiResponse | null> {
 
     this.tvShowTableSpinnerService.showSpinner();
-    this.searchTvShowsSignal.set([]);
+    this.tvShowsSignal.set(null);
 
     let queryParams = new HttpParams();
     queryParams = queryParams.append("page",1);
@@ -38,12 +38,12 @@ export class TvShowsHttpService {
 
     this.http.get<TvShowsApiResponse>(this.SEARCH_TV_SHOWS_URL, {params:queryParams})
       .subscribe(data => {
-        this.searchTvShowsSignal.set(data.tv_shows);
+        this.tvShowsSignal.set(data);
       });
 
     this.tvShowTableSpinnerService.hideSpinner();
 
-    return this.searchTvShowsSignal.asReadonly();
+    return this.tvShowsSignal.asReadonly();
   }
 
   public getTvShowDetails(tvShowId: string): Observable<TvShowDetails> {
@@ -55,21 +55,21 @@ export class TvShowsHttpService {
       );
   }
 
-  getMostPopularTvShows(page: number): Signal<TvShow[]> {
+  getMostPopularTvShows(page: number): Signal<TvShowsApiResponse | null> {
 
     this.tvShowTableSpinnerService.showSpinner();
-    this.searchTvShowsSignal.set([]);
+    this.tvShowsSignal.set(null);
 
     let queryParams = new HttpParams();
     queryParams = queryParams.append("page",page);
 
     this.http.get<TvShowsApiResponse>(this.MOST_POPULAR_TV_SHOWs_URL,  {params:queryParams})
       .subscribe(data => {
-        this.searchTvShowsSignal.set(data.tv_shows);
+        this.tvShowsSignal.set(data);
       });
 
     this.tvShowTableSpinnerService.hideSpinner();
 
-    return this.searchTvShowsSignal.asReadonly();
+    return this.tvShowsSignal.asReadonly();
   }
 }

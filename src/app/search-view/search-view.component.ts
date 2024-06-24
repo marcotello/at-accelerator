@@ -8,6 +8,7 @@ import {TvShow} from "../models/tv-show.model";
 import {TvShowTableSpinnerService} from "../services/tv-show-table-spinner.service";
 import {FavoritesService} from "../services/favorites.service";
 import {PaginatorComponent} from "../paginator/paginator.component";
+import {TvShowsApiResponse} from "../models/tv-shows-api-response.model";
 
 @Component({
   selector: 'app-search-view',
@@ -19,16 +20,35 @@ import {PaginatorComponent} from "../paginator/paginator.component";
 })
 export class SearchViewComponent {
 
+  private isSearch = false;
+  private page = 1;
+  private pages = 0;
+  private totalTvShows = 0;
+
+  private searchTerm: string = "";
+
+
   protected tvShowsHttpService = inject(TvShowsHttpService);
   protected tvShowTableSpinnerService = inject(TvShowTableSpinnerService);
   private favoritesService = inject(FavoritesService);
 
-  tvShowsSignalToDisplay: Signal<TvShow[]> = inject(ActivatedRoute).snapshot.data['tvShows'];
+  tvShowsSignalToDisplay: Signal<TvShowsApiResponse | null> = inject(ActivatedRoute).snapshot.data['tvShows'];
 
   searchTvShow(term = "", event?: Event): void {
     event?.preventDefault();
 
-    this.tvShowsSignalToDisplay = this.tvShowsHttpService.searchTVShows(term);
+    this.isSearch = true;
+    this.searchTerm = term;
+
+    this.fetchTvShows();
+  }
+
+  fetchTvShows(): void {
+    if (this.isSearch) {
+      this.tvShowsSignalToDisplay = this.tvShowsHttpService.searchTVShows(this.searchTerm);
+    } else {
+      this.tvShowsSignalToDisplay = this.tvShowsHttpService.getMostPopularTvShows(this.page);
+    }
   }
 }
 
