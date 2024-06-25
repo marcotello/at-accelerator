@@ -1,5 +1,4 @@
 import {inject, Injectable, signal, Signal} from '@angular/core';
-import {TvShow} from "../models/tv-show.model";
 import {TvShowsApiResponse} from "../models/tv-shows-api-response.model";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {TvShowTableSpinnerService} from "./tv-show-table-spinner.service";
@@ -24,13 +23,12 @@ export class TvShowsHttpService {
   private tvShowTableSpinnerService = inject(TvShowTableSpinnerService);
 
 
-  public searchTVShows(term: string): Signal<TvShowsApiResponse | null> {
+  public searchTVShows(term: string, page: number): Signal<TvShowsApiResponse | null> {
 
     this.tvShowTableSpinnerService.showSpinner();
-    this.tvShowsSignal.set(null);
 
     let queryParams = new HttpParams();
-    queryParams = queryParams.append("page",1);
+    queryParams = queryParams.append("page",page);
 
     if(term !== '') {
       queryParams = queryParams.append("q", term);
@@ -58,7 +56,6 @@ export class TvShowsHttpService {
   getMostPopularTvShows(page: number): Signal<TvShowsApiResponse | null> {
 
     this.tvShowTableSpinnerService.showSpinner();
-    this.tvShowsSignal.set(null);
 
     let queryParams = new HttpParams();
     queryParams = queryParams.append("page",page);

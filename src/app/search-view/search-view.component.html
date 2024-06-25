@@ -19,7 +19,10 @@
   </div>
   <div class="row">
     <div class="col-sm-12">
-      <app-paginator></app-paginator>
+      <app-paginator [pageSignal]="currentPage"
+                     [totalPagesSignal]="tvShowsSignalToDisplay()!.pages"
+                     (nextPage)="changePage($event)">
+      </app-paginator>
     </div>
   </div>
 </div>

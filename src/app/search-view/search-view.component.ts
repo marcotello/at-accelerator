@@ -1,10 +1,9 @@
 import {ChangeDetectionStrategy, Component, inject, Signal} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {CommonModule, ViewportScroller} from '@angular/common';
 import {TvShowTableComponent} from '../tv-show-table/tv-show-table.component';
 import {FormsModule} from "@angular/forms";
 import {TvShowsHttpService} from "../services/tv-shows-http.service";
 import {ActivatedRoute} from "@angular/router";
-import {TvShow} from "../models/tv-show.model";
 import {TvShowTableSpinnerService} from "../services/tv-show-table-spinner.service";
 import {FavoritesService} from "../services/favorites.service";
 import {PaginatorComponent} from "../paginator/paginator.component";
@@ -21,11 +20,10 @@ import {TvShowsApiResponse} from "../models/tv-shows-api-response.model";
 export class SearchViewComponent {
 
   private isSearch = false;
-  private page = 1;
-  private pages = 0;
-  private totalTvShows = 0;
-
   private searchTerm: string = "";
+  private readonly viewport = inject(ViewportScroller);
+
+  protected currentPage = 1;
 
 
   protected tvShowsHttpService = inject(TvShowsHttpService);
@@ -39,16 +37,23 @@ export class SearchViewComponent {
 
     this.isSearch = true;
     this.searchTerm = term;
+    this.currentPage = 1;
 
     this.fetchTvShows();
   }
 
   fetchTvShows(): void {
     if (this.isSearch) {
-      this.tvShowsSignalToDisplay = this.tvShowsHttpService.searchTVShows(this.searchTerm);
+      this.tvShowsSignalToDisplay = this.tvShowsHttpService.searchTVShows(this.searchTerm, this.currentPage);
     } else {
-      this.tvShowsSignalToDisplay = this.tvShowsHttpService.getMostPopularTvShows(this.page);
+      this.tvShowsSignalToDisplay = this.tvShowsHttpService.getMostPopularTvShows(this.currentPage);
     }
+  }
+
+  changePage($event: number) {
+    this.currentPage = $event;
+    this.fetchTvShows();
+    this.viewport.scrollToPosition([0, 0]);
   }
 }
 
