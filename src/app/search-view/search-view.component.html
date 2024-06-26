@@ -19,7 +19,8 @@
   </div>
   <div class="row">
     <div class="col-sm-12">
-      <app-paginator [pageSignal]="currentPage"
+      <app-paginator *ngIf="tvShowsSignalToDisplay()!.pages > 1"
+                     [pageSignal]="currentPage"
                      [totalPagesSignal]="tvShowsSignalToDisplay()!.pages"
                      (nextPage)="changePage($event)">
       </app-paginator>
