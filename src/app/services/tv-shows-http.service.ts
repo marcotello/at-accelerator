@@ -7,6 +7,8 @@ import {TvShowDetailsApiResponse} from "../models/tv-show-details-api-response.m
 import {map} from "rxjs/operators";
 import {Observable} from "rxjs";
 
+const NO_DATA: TvShowsApiResponse = {page: 1, pages: 0, tv_shows: [], total: ""};
+
 @Injectable({
   providedIn: 'root'
 })
@@ -17,15 +19,16 @@ export class TvShowsHttpService {
   private TV_SHOW_DETAILS_URL = this.BASE_URL + '/show-details';
   private MOST_POPULAR_TV_SHOWs_URL = this.BASE_URL + '/most-popular';
 
-  private tvShowsSignal = signal<TvShowsApiResponse | null>(null);
+  private tvShowsSignal = signal<TvShowsApiResponse>(NO_DATA);
 
   private http = inject(HttpClient);
   private tvShowTableSpinnerService = inject(TvShowTableSpinnerService);
 
 
-  public searchTVShows(term: string, page: number): Signal<TvShowsApiResponse | null> {
+  public searchTVShows(term: string, page: number): Signal<TvShowsApiResponse> {
 
     this.tvShowTableSpinnerService.showSpinner();
+    this.tvShowsSignal.set(NO_DATA);
 
     let queryParams = new HttpParams();
     queryParams = queryParams.append("page",page);
@@ -37,9 +40,8 @@ export class TvShowsHttpService {
     this.http.get<TvShowsApiResponse>(this.SEARCH_TV_SHOWS_URL, {params:queryParams})
       .subscribe(data => {
         this.tvShowsSignal.set(data);
+        this.tvShowTableSpinnerService.hideSpinner();
       });
-
-    this.tvShowTableSpinnerService.hideSpinner();
 
     return this.tvShowsSignal.asReadonly();
   }
@@ -53,9 +55,10 @@ export class TvShowsHttpService {
       );
   }
 
-  getMostPopularTvShows(page: number): Signal<TvShowsApiResponse | null> {
+  getMostPopularTvShows(page: number): Signal<TvShowsApiResponse> {
 
     this.tvShowTableSpinnerService.showSpinner();
+    this.tvShowsSignal.set(NO_DATA);
 
     let queryParams = new HttpParams();
     queryParams = queryParams.append("page",page);
@@ -63,9 +66,8 @@ export class TvShowsHttpService {
     this.http.get<TvShowsApiResponse>(this.MOST_POPULAR_TV_SHOWs_URL,  {params:queryParams})
       .subscribe(data => {
         this.tvShowsSignal.set(data);
+        this.tvShowTableSpinnerService.hideSpinner();
       });
-
-    this.tvShowTableSpinnerService.hideSpinner();
 
     return this.tvShowsSignal.asReadonly();
   }

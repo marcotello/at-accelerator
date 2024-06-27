@@ -25,12 +25,11 @@ export class SearchViewComponent {
 
   protected currentPage = 1;
 
-
   protected tvShowsHttpService = inject(TvShowsHttpService);
   protected tvShowTableSpinnerService = inject(TvShowTableSpinnerService);
   private favoritesService = inject(FavoritesService);
 
-  tvShowsSignalToDisplay: Signal<TvShowsApiResponse | null> = inject(ActivatedRoute).snapshot.data['tvShows'];
+  tvShowsSignalToDisplay: Signal<TvShowsApiResponse> = inject(ActivatedRoute).snapshot.data['tvShows'];
 
   searchTvShow(term = "", event?: Event): void {
     event?.preventDefault();
