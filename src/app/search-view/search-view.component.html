@@ -13,8 +13,17 @@
     </div>
     <div class="row">
       <div class="col-sm-12">
-        <app-tv-show-table [tvShowsSignal]="tvShowsSignalToDisplay()">
+        <app-tv-show-table [tvShowsSignal]="tvShowsSignalToDisplay()!.tv_shows">
         </app-tv-show-table>
       </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <app-paginator *ngIf="tvShowsSignalToDisplay()!.pages > 1"
+                     [pageSignal]="currentPage"
+                     [totalPagesSignal]="tvShowsSignalToDisplay()!.pages"
+                     (nextPage)="changePage($event)">
+      </app-paginator>
+    </div>
   </div>
 </div>

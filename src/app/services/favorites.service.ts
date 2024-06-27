@@ -50,7 +50,7 @@ export class FavoritesService {
   getFavoriteTvShowsDetails(): Observable<TvShowDetails[]> {
     const favoriteTvShowIds = this.favoritesSignal();
 
-    const tvShowDetails$ = favoriteTvShowIds.map(tvShowId => this.tvShowHttpService.getTvShowDetailsFromApi('' + tvShowId));
+    const tvShowDetails$ = favoriteTvShowIds.map(tvShowId => this.tvShowHttpService.getTvShowDetails('' + tvShowId));
 
     return forkJoin(tvShowDetails$)
       .pipe(
@@ -74,7 +74,8 @@ export class FavoritesService {
       'To Be Determined',
       'Canceled/Ended',
       'Ended',
-      'Returning Series'
+      'Returning Series',
+      ''
     ];
 
     return tvShowDetails.sort((tvShow1: TvShowDetails, tvShow2: TvShowDetails) => {

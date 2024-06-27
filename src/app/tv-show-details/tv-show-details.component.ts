@@ -2,7 +2,7 @@ import {Component, inject, Signal} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {TvShowDetails} from "../models/tv-show-details.model";
 import {DatePipe, DecimalPipe, I18nPluralPipe} from "@angular/common";
-import {TvShowsHttpService} from "../services/tv-shows-http.service";
+import {TvShowDetailsService} from "../services/tv-show-details.service";
 
 @Component({
   selector: 'app-tv-show-details',
@@ -17,7 +17,7 @@ import {TvShowsHttpService} from "../services/tv-shows-http.service";
 })
 export default class TvShowDetailsComponent {
 
-  protected episodeDetailsSignal = inject(TvShowsHttpService).getEpisodeDetails();
+  protected episodeDetailsSignal = inject(TvShowDetailsService).getEpisodeDetails();
 
   protected router = inject(Router);
 

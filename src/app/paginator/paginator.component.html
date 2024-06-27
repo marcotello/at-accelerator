@@ -1,0 +1,17 @@
+<div class="paginator-pages">
+  Page {{pageSignal()}} of {{ totalPagesSignal() }}
+</div>
+<div class="paginator-container">
+  <div class="paginator-button">
+    <button class="large" (click)="goToFirstPage()" [disabled]="pageSignal() <= 1"><<</button>
+  </div>
+  <div class="paginator-button">
+    <button class="large" (click)="goToPreviousPage()" [disabled]="pageSignal() <= 1"><</button>
+  </div>
+  <div class="paginator-button">
+    <button class="large" (click)="goToNextPage()" [disabled]="pageSignal() >= totalPagesSignal()">></button>
+  </div>
+  <div class="paginator-button">
+    <button class="large" (click)="goToLastPage()" [disabled]="pageSignal() >= totalPagesSignal()">>></button>
+  </div>
+</div>

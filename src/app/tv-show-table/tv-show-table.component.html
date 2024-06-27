@@ -10,7 +10,7 @@
   </tr>
   </thead>
   <tbody>
-    @if (showSpinnerSignal()) {
+    @if (tvShowTableSpinnerService.showSpinnerSignal()) {
       <tr>
         <td data-label="Name">
           <div class="spinner-container">
@@ -31,7 +31,7 @@
               <span class="icon-info"></span>
             </a>
             <span class="icon-bookmark" [appToggleFavorite]="tvShow.id"
-                  [appToggleHighlight]="favoritesService.favorites().includes(tvShow.id)">
+                  [class.highlight]="favoritesService.favorites().includes(tvShow.id)">
             </span>
             <span class="icon-link"></span>
           </td>

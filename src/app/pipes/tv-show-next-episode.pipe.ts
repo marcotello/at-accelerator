@@ -13,24 +13,25 @@ export class TvShowNextEpisodePipe implements PipeTransform {
       return '';
     }
 
-    if(this.IsShowNoLongerAvaialble(status)) {
+    if(this.IsShowNoLongerAvailable(status)) {
       return 'Show has ended';
     }
 
-    if(this.IsSHowRunningWithNoEpisodes(nextEpisodeDate!, status)) {
+    if(this.IsShowRunningWithNoEpisodes(nextEpisodeDate!, status)) {
       return 'No next episode date';
     }
 
     return `Next episode ${formatDistanceToNow(new Date(nextEpisodeDate!), {addSuffix: true})}`;
   }
 
-  private IsShowNoLongerAvaialble(status: string) {
+  private IsShowNoLongerAvailable(status: string) {
     return status === TvShowStatus.Canceled ||
       status === TvShowStatus.Ended ||
-      status === TvShowStatus.ToBeDetermined;
+      status === TvShowStatus.ToBeDetermined ||
+      status === TvShowStatus.NoStatus;
   }
 
-  private IsSHowRunningWithNoEpisodes(nextEpisodeDate: string, status: string) {
+  private IsShowRunningWithNoEpisodes(nextEpisodeDate: string, status: string) {
     return !nextEpisodeDate &&
       (status === TvShowStatus.InDevelopment || status === TvShowStatus.Running || status === TvShowStatus.ToBeDetermined);
   }
