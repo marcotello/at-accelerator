@@ -1,27 +1,22 @@
-<div class="favorites-card">
-  <div class="card">
-    <div class="section">
-      <div class="favorites-card-heading">
-        <div class="favorites-card-title">
-          <h4>{{tvShow.name}}</h4>
-        </div>
-        <div class="favorites-card-controls">
-          <div>
-            <a [routerLink]="['/details', tvShow.id]">
-              <span class="icon-info"></span>
-            </a>
-          </div>
-          <div>
+<app-card [title]="tvShow.name">
+  <div custom-controls>
+    <div class="favorites-card-controls">
+      <div>
+        <a [routerLink]="['/details', tvShow.id]">
+          <span class="icon-info"></span>
+        </a>
+      </div>
+      <div>
             <span class="icon-bookmark highlight" [appToggleFavorite]="tvShow.id">
             </span>
-          </div>
-        </div>
       </div>
     </div>
+  </div>
+  <div custom-content>
     <div class="favorites-card-image" [ngStyle]="{'background-image': 'url(' + tvShow.image_thumbnail_path + ')'}">
     </div>
     <div class="section">
       {{tvShow.countdown?.air_date | tvShowNextEpisode: tvShow.status}}
     </div>
   </div>
-</div>
+</app-card>

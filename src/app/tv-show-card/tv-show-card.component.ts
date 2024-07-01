@@ -4,6 +4,7 @@ import {DatePipe, NgStyle} from "@angular/common";
 import {RouterLink} from "@angular/router";
 import {TvShowNextEpisodePipe} from "../pipes/tv-show-next-episode.pipe";
 import {ToggleFavoriteDirective} from "../directives/toggle-favorite.directive";
+import {CardComponent} from "../card/card.component";
 
 @Component({
   selector: 'app-tv-show-card',
@@ -13,7 +14,8 @@ import {ToggleFavoriteDirective} from "../directives/toggle-favorite.directive";
     RouterLink,
     NgStyle,
     TvShowNextEpisodePipe,
-    ToggleFavoriteDirective
+    ToggleFavoriteDirective,
+    CardComponent
   ],
   templateUrl: './tv-show-card.component.html',
   styleUrl: './tv-show-card.component.css'

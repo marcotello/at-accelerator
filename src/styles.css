@@ -15,3 +15,34 @@ span.icon-bookmark.highlight {
   justify-content: center;
   align-items: center;
 }
+
+.generic-card {
+  width: 280px;
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+}
+
+.card {
+  margin: 0 0;
+}
+
+.generic-card-heading {
+  display: flex;
+}
+
+.generic-card-title {
+  width: 90%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.generic-card-controls {
+  width: 10%;
+  text-align: center;
+}
+
+  .icon-bookmark {
+    cursor: pointer;
+  }
