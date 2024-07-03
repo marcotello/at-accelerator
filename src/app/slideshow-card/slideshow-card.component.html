@@ -1,0 +1,14 @@
+<div class="slideshow-card-container">
+  <app-card [title]="tvShowSignal().name" [cardWidth]="500">
+    <div custom-controls>
+      <div class="slideshow-card-controls">
+        <div>
+          <a (click)="closeDialog()">x</a>
+        </div>
+      </div>
+    </div>
+    <div custom-content>
+      <app-slideshow [picturesSignal]="tvShowSignal().pictures"></app-slideshow>
+    </div>
+  </app-card>
+</div>

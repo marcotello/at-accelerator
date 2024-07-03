@@ -1,0 +1,12 @@
+<div class="slideshow-image-container">
+  <div class="slideshow-image" [ngStyle]="{'background-image': 'url(' + picturesSignal()[currentPictureIndex] + ')'}">
+  </div>
+</div>
+<div class="section">
+  <div class="miniatures-section">
+    @for (picture of picturesSignal(); track picture; let index = $index) {
+      <div class="miniature" [ngStyle]="{'background-image': 'url(' + picture + ')'}"
+           (click)="selectPicture(index)" (keydown)="selectPicture(index)"></div>
+    }
+  </div>
+</div>

@@ -1,19 +1,21 @@
 
-.show-details {
+.show-details-body {
+  padding: 0 8px 0 8px;
+}
 
-  .show-details-body {
-    padding: 0 8px 0 8px;
+.show-details-thumbnail {
+  padding: 10px;
+}
 
-    .show-details-thumbnail {
-      padding: 10px;
-    }
-  }
+.show-details-rating {
+  font-weight: bold;
+}
 
-  .show-details-rating {
-    font-weight: bold;
-  }
+.show-details-action {
+  margin-top: 15px;
+}
 
-  .show-details-action {
-    margin-top: 15px;
-  }
+dialog {
+  background-color: rgba(32, 82, 221, 0);
+  border: none;
 }

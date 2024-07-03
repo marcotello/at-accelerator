@@ -1,0 +1,16 @@
+
+.slideshow-card-container {
+  padding: 5px 5px;
+}
+.slideshow-card-controls {
+  display: flex;
+  align-items: center;
+  padding-right: 10px;
+}
+
+.slideshow-card-controls a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}

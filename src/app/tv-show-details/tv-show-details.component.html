@@ -30,8 +30,13 @@
   <div class="show-details-action">
     <div class="row">
       <div class="col-sm-12">
+        <button class="tertiary" (click)="dialog.showModal()">Show Images</button>
         <button class="primary" (click)="back();"><< Back </button>
       </div>
     </div>
   </div>
 </div>
+
+<dialog #dialog>
+  <app-slideshow-card [tvShowSignal]="tvShowDetails()" (closeDialogEvent)="dialog.close()"></app-slideshow-card>
+</dialog>

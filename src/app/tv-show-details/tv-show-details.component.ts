@@ -3,6 +3,8 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {TvShowDetails} from "../models/tv-show-details.model";
 import {DatePipe, DecimalPipe, I18nPluralPipe} from "@angular/common";
 import {TvShowDetailsService} from "../services/tv-show-details.service";
+import {SlideshowCardComponent} from "../slideshow-card/slideshow-card.component";
+
 
 @Component({
   selector: 'app-tv-show-details',
@@ -10,7 +12,8 @@ import {TvShowDetailsService} from "../services/tv-show-details.service";
   imports: [
     DatePipe,
     DecimalPipe,
-    I18nPluralPipe
+    I18nPluralPipe,
+    SlideshowCardComponent
   ],
   templateUrl: './tv-show-details.component.html',
   styleUrl: './tv-show-details.component.css'
@@ -25,5 +28,10 @@ export default class TvShowDetailsComponent {
 
   back() {
     history.back();
+  }
+
+  showImages(id: number)
+  {
+    console.log('images: ' + id);
   }
 }
